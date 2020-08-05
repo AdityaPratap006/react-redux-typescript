@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <h1>Hi There!</h1>
+      <h1>Hi there!</h1>
     </div>
   );
 }
