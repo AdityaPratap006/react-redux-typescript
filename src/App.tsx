@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
@@ -14,10 +14,14 @@ interface AppProps {
 }
 
 const _App = (props: AppProps): JSX.Element => {
+  const [loading, setLoading] = useState<boolean>(true);
+
   const { todos, fetchTodos, deleteTodo } = props;
 
   useEffect(() => {
+    setLoading(true);
     fetchTodos!();
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,7 +42,7 @@ const _App = (props: AppProps): JSX.Element => {
     <div className="App">
       <h1>Hi there!</h1>
       <div>
-        {renderList()}
+        {loading ? <h2>Loading todos...</h2> : renderList()}
       </div>
     </div>
   );
