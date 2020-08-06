@@ -3,7 +3,7 @@ import './App.css';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
 
-import { Todo, fetchTodos, deleteTodo, FetchTodosAction } from './redux/actions';
+import { Todo, fetchTodos, deleteTodo } from './redux/actions';
 import { StoreState } from './redux/reducers/root.reducer';
 import { ThunkDispatch } from 'redux-thunk';
 
@@ -18,6 +18,7 @@ const _App = (props: AppProps): JSX.Element => {
 
   useEffect(() => {
     fetchTodos!();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const todoClickHandler = (id: string): void => {
