@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
+import { Dispatch, ActionCreator } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+
 import { ActionTypes } from './types';
 
+import { StoreState } from '../reducers/root.reducer';
 export interface Todo {
     id: string;
     title: string;
@@ -13,13 +16,20 @@ export interface FetchTodosAction {
     payload: Todo[];
 }
 
+export type FetchTodosActionAsync = ActionCreator<ThunkAction<
+    Promise<FetchTodosAction>,
+    StoreState,
+    null,
+    FetchTodosAction
+>>;
+
 const URL = 'https://jsonplaceholder.typicode.com/todos';
 
-export const fetchTodos = () => {
+export const fetchTodos: FetchTodosActionAsync = () => {
     return async (dispatch: Dispatch) => {
         const response = await axios.get<Todo[]>(URL);
 
-        dispatch<FetchTodosAction>({
+        return dispatch<FetchTodosAction>({
             type: ActionTypes.FETCH_TODOS,
             payload: response.data,
         });
