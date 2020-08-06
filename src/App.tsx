@@ -16,15 +16,24 @@ const _App = (props: AppProps): JSX.Element => {
   const { todos, fetchTodos } = props;
 
   useEffect(() => {
-    console.log({ todos });
-
     fetchTodos!();
-
   }, []);
+
+  const renderList = (): JSX.Element[] | undefined => {
+    return todos?.map(todo => (
+      <div key={todo.id}>
+        <h2>{todo.title}</h2>
+        <h3>{todo.completed ? 'Done' : 'Pending'}</h3>
+      </div>
+    ));
+  }
 
   return (
     <div className="App">
       <h1>Hi there!</h1>
+      <div>
+        {renderList()}
+      </div>
     </div>
   );
 }
