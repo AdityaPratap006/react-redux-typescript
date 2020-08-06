@@ -3,25 +3,30 @@ import './App.css';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
 
-import { Todo, fetchTodos } from './redux/actions';
+import { Todo, fetchTodos, deleteTodo, FetchTodosAction } from './redux/actions';
 import { StoreState } from './redux/reducers/root.reducer';
 import { ThunkDispatch } from 'redux-thunk';
 
 interface AppProps {
   todos?: Todo[];
-  fetchTodos?: () => any;
+  fetchTodos?: typeof fetchTodos;
+  deleteTodo?: typeof deleteTodo;
 }
 
 const _App = (props: AppProps): JSX.Element => {
-  const { todos, fetchTodos } = props;
+  const { todos, fetchTodos, deleteTodo } = props;
 
   useEffect(() => {
     fetchTodos!();
   }, []);
 
+  const todoClickHandler = (id: string): void => {
+    deleteTodo!(id);
+  };
+
   const renderList = (): JSX.Element[] | undefined => {
     return todos?.map(todo => (
-      <div key={todo.id}>
+      <div key={todo.id} onClick={() => todoClickHandler(todo.id)}>
         <h2>{todo.title}</h2>
         <h3>{todo.completed ? 'Done' : 'Pending'}</h3>
       </div>
@@ -51,11 +56,13 @@ const mapStateToProps = (state: StoreState): MapStateType => {
 
 interface MapDispatchType {
   fetchTodos: () => any;
+  deleteTodo: (id: string) => any;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>): MapDispatchType => {
   return ({
     fetchTodos: () => dispatch(fetchTodos()),
+    deleteTodo: (id) => dispatch(deleteTodo(id)),
   });
 }
 
